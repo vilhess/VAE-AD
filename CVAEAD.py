@@ -55,7 +55,7 @@ for anormal in range(10):
     if not os.path.isdir(f'figures/Anomaly_{ANORMAL}'):
         os.mkdir(f'figures/Anomaly_{ANORMAL}')
 
-    plt.savefig(f'figures/Anomaly_{ANORMAL}/conv_gen_before_training.jpg', bbox_inches='tight', pad_inches=0)
+    plt.savefig(f'figures/Anomaly_{ANORMAL}/conv2_gen_before_training.jpg', bbox_inches='tight', pad_inches=0)
     plt.close()
 
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -74,14 +74,14 @@ for anormal in range(10):
         print(f"For epoch {epoch+1}/{EPOCHS} ; loss is {epoch_loss}")
 
     checkpoints = {'state_dict':model.state_dict()}
-    torch.save(checkpoints, f'checkpoints/conv_model_anomaly_{ANORMAL}.pkl')
+    torch.save(checkpoints, f'checkpoints/conv2_model_anomaly_{ANORMAL}.pkl')
 
     grid_image= show_batch(model, batch, conv=True, device=DEVICE)
     plt.imshow(grid_image)
     plt.title(f"Epoch : {epoch}")
     plt.axis('off')
     plt.legend()
-    plt.savefig(f'figures/Anomaly_{ANORMAL}/conv_gen_after_training.jpg', bbox_inches='tight', pad_inches=0)
+    plt.savefig(f'figures/Anomaly_{ANORMAL}/conv2_gen_after_training.jpg', bbox_inches='tight', pad_inches=0)
     plt.close()
 
     test_results_mean = {i:None for i in range(10)}
@@ -96,7 +96,7 @@ for anormal in range(10):
     plt.bar(test_results_mean.keys(), test_results_mean.values())
     plt.title('Mean scores for each digit')
 
-    plt.savefig(f'figures/Anomaly_{ANORMAL}/conv_mean_scores.jpg', bbox_inches='tight', pad_inches=0)
+    plt.savefig(f'figures/Anomaly_{ANORMAL}/conv2_mean_scores.jpg', bbox_inches='tight', pad_inches=0)
     plt.close()
 
     # Calcul p-values : partie Validation
@@ -123,5 +123,5 @@ for anormal in range(10):
         final_results[digit][0] = test_p_values.tolist()
         final_results[digit][1] = len(inputs_test)
 
-    with open(f"p_values/conv_{ANORMAL}.json", "w") as file:
+    with open(f"p_values/conv2_{ANORMAL}.json", "w") as file:
         json.dump(final_results, file)
